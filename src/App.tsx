@@ -5,6 +5,8 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import './styles/global.css';
 import { useEffect } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { HomeHeader } from './components/HomeHeader';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,9 +32,10 @@ export default function App() {
 
 
   return (
-    <View className="flex-1 items-center justify-center bg-lime-500">
-      <Text className='text-base'>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View className="flex-1 bg-white">
+      <SafeAreaProvider>
+        <HomeHeader />
+      </SafeAreaProvider>
     </View>
   );
 }
