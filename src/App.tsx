@@ -16,6 +16,7 @@ import { HomeHeader } from './components/HomeHeader';
 import { DateSwitcher } from './components/DateSwitcher';
 import { DailyStats } from './components/DailyStats';
 import { MealsList } from './components/MealsList';
+import { CreateMealBottomBar } from './components/CreateMealBottomBar';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,6 +43,7 @@ export default function App() {
       <SafeAreaProvider>
         <HomeHeader />
         <MealsList />
+        <CreateMealBottomBar />
       </SafeAreaProvider>
     </View>
   );
