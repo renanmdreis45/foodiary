@@ -6,6 +6,11 @@ import { Button } from './Button';
 import { MicIcon, SquareIcon, XIcon } from 'lucide-react-native';
 import { colors } from '../styles/colors';
 import { cn } from '../utils/cn';
+import {
+  RecordingPresets,
+  useAudioRecorder,
+  useAudioRecorderState,
+} from 'expo-audio';
 
 interface IAudioModalProps {
   open: boolean;
@@ -16,6 +21,9 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
   const [isRecording, setIsRecording] = useState(false);
   const [audioUri, setAudioUri] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const recorderState = useAudioRecorderState(audioRecorder);
 
   function handleStartRecording() {
     setIsRecording(true);
