@@ -1,13 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { Modal, SafeAreaView, View, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Modal, SafeAreaView, View, Text, Alert } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { MicIcon, SquareIcon, XIcon } from 'lucide-react-native';
 import { colors } from '../styles/colors';
 import { cn } from '../utils/cn';
 import {
+  AudioModule,
   RecordingPresets,
+  setAudioModeAsync,
   useAudioRecorder,
   useAudioRecorderState,
 } from 'expo-audio';
@@ -18,19 +20,35 @@ interface IAudioModalProps {
 }
 
 export function AudioModal({ open, onClose }: IAudioModalProps) {
-  const [isRecording, setIsRecording] = useState(false);
   const [audioUri, setAudioUri] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(audioRecorder);
+  const { isRecording } = useAudioRecorderState(audioRecorder);
 
-  function handleStartRecording() {
-    setIsRecording(true);
+  useEffect(() => {
+    (async () => {
+      const status = await AudioModule.requestRecordingPermissionsAsync();
+      if (!status.granted) {
+        Alert.alert('A permissão para acessar o microfone foi negada.');
+      }
+
+      setAudioModeAsync({
+        playsInSilentMode: true,
+        allowsRecording: true,
+      });
+    })();
+  }, []);
+
+  async function handleStartRecording() {
+    await audioRecorder.prepareToRecordAsync();
+    audioRecorder.record();
   }
 
-  function handleStopRecording() {
-    setIsRecording(false);
+  async function handleStopRecording() {
+    await audioRecorder.stop();
+    alert(audioRecorder.uri);
   }
 
   function handlePlay() {
@@ -48,7 +66,6 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
 
   function handleCloseModal() {
     setAudioUri(null);
-    setIsRecording(false);
     setIsPlaying(false);
     onClose();
   }
