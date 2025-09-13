@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Modal, SafeAreaView, View, Text, Alert } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Modal, View, Text, Alert } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import {
   CheckIcon,
@@ -34,7 +34,7 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
 
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(audioRecorder);
-  const { isRecording } = useAudioRecorderState(audioRecorder);
+  const { isRecording } = recorderState;
   const player = useAudioPlayer(audioUri);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
                       'size-[189px] bg-gray-700/10 rounded-full',
                       isRecording && 'border-lime-600/10'
                     )}
-                  ></View>
+                  />
                 </View>
               </View>
               <Text className="text-white text-base text-center font-sans-regular w-[192px] mt-8">
@@ -142,7 +142,7 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
             {audioUri && (
               <View className="p-5 pt-6 items-center pb-20 flex-row justify-center gap-8">
                 <Button size="icon" color="dark" onPress={handleDeleteAudio}>
-                  <Trash2Icon size={20} color={colors.gray[500]}></Trash2Icon>
+                  <Trash2Icon size={20} color={colors.gray[500]} />
                 </Button>
                 {!player.playing && (
                   <Button
@@ -157,12 +157,12 @@ export function AudioModal({ open, onClose }: IAudioModalProps) {
                   <Button
                     size="icon"
                     color="dark"
-                    onPress={() => player.play()}
+                    onPress={() => player.pause()}
                   >
                     <PauseIcon size={20} color={colors.lime[600]} />
                   </Button>
                 )}
-                <Button size="icon" onPress={() => player.pause()}>
+                <Button size="icon">
                   <CheckIcon size={20} color={colors.black[700]} />
                 </Button>
               </View>
