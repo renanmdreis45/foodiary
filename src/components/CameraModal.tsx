@@ -4,6 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { CameraIcon, XIcon, Trash2Icon, CheckIcon } from 'lucide-react-native';
 import { colors } from '../styles/colors';
+import { useCameraPermissions } from 'expo-camera';
 
 interface ICameraModalProps {
   open: boolean;
@@ -13,6 +14,8 @@ interface ICameraModalProps {
 export function CameraModal({ onClose, open }: ICameraModalProps) {
   const [hasPermission, setHaspermission] = useState(true);
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+
+  const [permission, requestPermission] = useCameraPermissions();
 
   function handleCloseModal() {
     onClose();
@@ -24,11 +27,15 @@ export function CameraModal({ onClose, open }: ICameraModalProps) {
   }
 
   function handleRequestPermission() {
-    setHaspermission(true);
+    requestPermission();
   }
 
   function handleDeletePhoto() {
     setPhotoUri(null);
+  }
+
+  if (!permission) {
+    return null;
   }
 
   return (
