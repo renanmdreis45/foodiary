@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Modal, StatusBar, View, Text } from 'react-native';
+import { useRef, useState } from 'react';
+import { Modal, StatusBar, View, Text, Image } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from './Button';
 import { CameraIcon, XIcon, Trash2Icon, CheckIcon } from 'lucide-react-native';
 import { colors } from '../styles/colors';
-import { useCameraPermissions } from 'expo-camera';
+import { useCameraPermissions, CameraView } from 'expo-camera';
 
 interface ICameraModalProps {
   open: boolean;
@@ -14,6 +14,7 @@ interface ICameraModalProps {
 export function CameraModal({ onClose, open }: ICameraModalProps) {
   const [hasPermission, setHaspermission] = useState(true);
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const cameraRef = useRef<CameraView>(null);
 
   const [permission, requestPermission] = useCameraPermissions();
 
@@ -22,8 +23,14 @@ export function CameraModal({ onClose, open }: ICameraModalProps) {
     setPhotoUri(null);
   }
 
-  function handleTakePicture() {
-    setPhotoUri('mock-photo-uri');
+  async function handleTakePicture() {
+    if (!cameraRef.current) {
+      return;
+    }
+
+    const { uri } = await cameraRef.current?.takePictureAsync({
+      imageType: 'jpg',
+    });
   }
 
   function handleRequestPermission() {
@@ -48,7 +55,7 @@ export function CameraModal({ onClose, open }: ICameraModalProps) {
     >
       <StatusBar barStyle="light-content" />
       <View className="bg-black flex-1">
-        {!hasPermission && (
+        {!permission.granted && (
           <View className="flex-1 items-center justify-center">
             <Text className="text-white text-center px-10 text-base font-sans-regular mb-4">
               Precisamos de permissão para acessar a câmera!
@@ -56,7 +63,8 @@ export function CameraModal({ onClose, open }: ICameraModalProps) {
             <Button onPress={handleRequestPermission}>Dar permissão</Button>
           </View>
         )}
-        {hasPermission && (
+
+        {permission.granted && (
           <SafeAreaProvider>
             <SafeAreaView className="flex-1">
               <View className="flex-row p-5">
@@ -65,20 +73,14 @@ export function CameraModal({ onClose, open }: ICameraModalProps) {
                 </Button>
               </View>
 
-              {!photoUri && (
-                <View className="flex-1 bg-gray-800 items-center justify-center">
-                  <Text className="text-white text-lg font-sans-regular">
-                    Câmera simulada
-                  </Text>
-                </View>
-              )}
+              {!photoUri && <CameraView ref={cameraRef} style={{ flex: 1 }} />}
 
               {photoUri && (
-                <View className="flex-1 bg-gray-800 items-center justify-center">
-                  <Text className="text-white text-lg font-sans-regular">
-                    Foto capturada
-                  </Text>
-                </View>
+                <Image
+                  source={{ uri: photoUri }}
+                  className="flex-1"
+                  resizeMode="contain"
+                />
               )}
               {!photoUri && (
                 <View className="p-5 pt-6 items-center gap-2 pb-12">
