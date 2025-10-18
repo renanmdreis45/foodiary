@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { TouchableOpacity, Text, View } from 'react-native';
 
 interface IMealCardProps {
@@ -8,7 +8,7 @@ interface IMealCardProps {
 
 export function MealCard({ name, id }: IMealCardProps) {
   return (
-    <Link href={`meals/${id}`}>
+    <Link href={`meals/${id}`} asChild>
       <TouchableOpacity>
         <Text className="text-base font-sans-regular text-gray-700">
           Hoje, 12h25
