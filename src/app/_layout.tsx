@@ -10,6 +10,9 @@ import {
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { AuthProvider } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
+
+SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
   return (
@@ -22,6 +25,8 @@ export default function Layout() {
 }
 
 function RootLayout() {
+  const { isLoggedIn, isLoading } = useAuth();
+
   const [loaded, error] = useFonts({
     HostGrotesk_400Regular,
     HostGrotesk_500Medium,
@@ -30,7 +35,9 @@ function RootLayout() {
   });
 
   useEffect(() => {
-    if (loaded || error) {
+    const isFontLoaded = loaded || error;
+    const isUserLoaded = !isLoading;
+    if (isFontLoaded && isUserLoaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
@@ -38,8 +45,6 @@ function RootLayout() {
   if (!loaded && !error) {
     return null;
   }
-
-  const isLoggedIn = false;
 
   return (
     <Stack screenOptions={{ headerShown: false }}>

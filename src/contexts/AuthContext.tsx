@@ -1,15 +1,16 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 interface IAuthContextValue {
-    isLoggedIn: boolean;
+  isLoggedIn: boolean;
+  isLoading: boolean;
 }
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext({} as IAuthContextValue);
 
-export function AuthProvider({children}: {children: React.ReactNode}) {
-    return (
-        <AuthContext.Provider value={{ isLoggedIn: false }}>
-            {children}
-        </AuthContext.Provider>
-    );
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <AuthContext.Provider value={{ isLoggedIn: false, isLoading: false }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
