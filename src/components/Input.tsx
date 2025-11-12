@@ -1,4 +1,5 @@
-import { TextInput } from 'react-native';
+import { useState } from 'react';
+import { Text, View } from 'react-native';
 
 interface IInputProps extends React.ComponentProps<typeof TextInput> {
   mask?: string;
@@ -15,5 +16,20 @@ export function Input({
   append,
   error,
 }: IInputProps) {
-  return <></>;
+  const [maskedValue, setMaskedValue] = useState('');
+
+  function handleChangeText(text: string) {
+    const value = mask ? applyMask(text, mask) : text;
+
+    setMaskedValue(value);
+    onChangeText?.(value);
+  }
+
+  return (
+    <View className="gap-2">
+      {label && (
+        <Text className="text-base font-sans-medium to-black-700">{label}</Text>
+      )}
+    </View>
+  );
 }
