@@ -41,7 +41,34 @@ export function Input({
           )}
           value={mask ? maskedValue : props.value}
         />
+        {append && (
+          <View className="size-[52px] items-center justify-center text-center rounded-[10px] bg-gray-400">
+            <Text className="text-base font-sans-regular text-gray-700">
+              {append}
+            </Text>
+          </View>
+        )}
       </View>
+      {error && (
+        <Text className="text-support-red font-sans-regular text-sm ">
+          {error}
+        </Text>
+      )}
     </View>
   );
+}
+
+function applyMask(value: string, mask: string): string {
+  const cleanValue = value.replace(/\D/g, '');
+  let result = '';
+
+  let j = 0;
+
+  for (let i = 0; i < mask.length && j < cleanValue.length; i++) {
+    if (mask[i] === '9') {
+      result += cleanValue[j++];
+    }
+  }
+
+  return result;
 }
