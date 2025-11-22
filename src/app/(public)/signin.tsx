@@ -1,8 +1,12 @@
-import { Input } from 'postcss';
 import React from 'react';
 import { Text, ImageBackground, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AuthLayout } from '../../components/AuthLayout';
+import { Input } from '../../components/Input';
+import { Button } from '../../components/Button';
+import { router } from 'expo-router';
+import { ArrowLeftIcon } from 'lucide-react-native';
+import { colors } from '../../styles/colors';
 
 export default function SignIn() {
   return (
@@ -11,7 +15,30 @@ export default function SignIn() {
       title="Entre em sua conta"
       subtitle="Acesse sua conta para continuar"
     >
-      <View></View>
+      <View className="justify-between flex-1">
+        <View className="gap-6">
+          <Input
+            label="E-mail"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="email"
+          />
+          <Input
+            label="Senha"
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="password"
+            secureTextEntry
+          />
+        </View>
+        <View className="flex-row gap-6">
+          <Button onPress={router.back} size="icon" color="gray">
+            <ArrowLeftIcon size={20} color={colors.black[700]} />
+          </Button>
+          <Button className="flex-1">Entrar</Button>
+        </View>
+      </View>
     </AuthLayout>
   );
 }
