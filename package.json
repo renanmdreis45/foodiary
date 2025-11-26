@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo-google-fonts/host-grotesk": "^0.4.0",
+    "@hookform/resolvers": "^5.2.2",
     "clsx": "^2.1.1",
     "expo": "^54.0.4",
     "expo-audio": "~1.0.11",
@@ -23,6 +24,7 @@
     "nativewind": "^4.1.23",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "react": "19.1.0",
+    "react-hook-form": "^7.66.1",
     "react-native": "0.81.4",
     "react-native-reanimated": "~4.1.0",
     "react-native-safe-area-context": "~5.6.0",
@@ -30,7 +32,8 @@
     "react-native-svg": "15.12.1",
     "react-native-worklets": "^0.5.1",
     "react-native-worklets-core": "^1.6.2",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
