@@ -7,8 +7,13 @@ import { Button } from '../../components/Button';
 import { router } from 'expo-router';
 import { ArrowLeftIcon } from 'lucide-react-native';
 import { colors } from '../../styles/colors';
+import z from 'zod';
 
 export default function SignIn() {
+  const schema = z.object({
+    email: z.email('Informe um e-mail válido'),
+    password: z.string().min(8, 'Deve conter pelo menos 8 caracteres'),
+  });
   return (
     <AuthLayout
       icon="👤"
